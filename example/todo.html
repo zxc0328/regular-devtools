@@ -1,14 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>regular-todo</title>
+  <meta charset="UTF-8">
+  <title>regular-todo</title>
 </head>
 <body>
-    <div id="todoapp"></div>
+ 
+<div id="todoapp"></div>
 
-    <!-- 引入regularjs -->
-    <script src="../lib/regular.js"></script>
-    <script src="./todo.js"></script>
+
+<script type='template/regular' id='todo'>
+<li on-click={count = count +1}>
+  This is global state: {todo.description}
+  This is local state: {count}
+</li>
+</script>
+
+<script type='template/regular' id='todomvc'>
+  
+<section id="main">
+  <ul id="todo-list">
+    {#list todos as todo}
+    <todo todo={todo} count={1}></todo>
+    {/list}
+  </ul>
+</section>
+
+</script>
+<!-- 引入regularjs -->
+<script src="../lib/regular.js"></script>
+<script src="./todo.js"></script>
 </body>
 </html>

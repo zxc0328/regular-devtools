@@ -1,40 +1,17 @@
 
 var Todo = Regular.extend({
-    template: `
-        <li on-click={count = count +1}>
-            This is global state: {todo.description}
-            This is local state: {count}
-        </li>
-    `,
-    name: "todo"
-});
-
-var Todos = Regular.extend({
-    template: `
-        <section id="main">
-            <ul id="todo-list">
-                {#inc this.$body}
-            </ul>
-        </section>
-    `,
-    name: 'todos'
+  name: "todo",
+  template: "#todo"
 });
 
 var TodoMVC = Regular.extend({
-    template: `
-        <todos>
-            {#list todos as todo}
-                <todo todo={ todo } count={ 1 }></todo>
-            {/list}
-        </todos>
-    `,
-});
-
+    template: '#todomvc', // id | template string | preparsed ast
+    // get the list;
+})
 var todos = [
     { description: "sleep" },
     { description: "work" }
-];
-
+]
 var app = new TodoMVC({
     data: {todos: todos}
-}).$inject("#todoapp");
+}).$inject("#todoapp")
