@@ -149,7 +149,7 @@ var devtoolsModel = (function() {
                         childNodes: [],
                         node: []
                     };
-                    var body = document.querySelector("body");
+                    var body = document.body;
                     if (ins[i].parentNode === body) {
                         for (var j = 0; j < ins[i].group.children.length; j++) {
                             if (ins[i].group.get(j).type) {
