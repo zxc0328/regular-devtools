@@ -1,0 +1,57 @@
+.json-tree {
+	padding: 10px 20px;
+}
+
+.json-tree-data {
+	font-size: 13px;
+}
+
+.json-tree .arrow-down {
+	transform: rotate(90deg);
+}
+
+.json-tree-data-key .arrow {
+	height: 10px;
+	width: 10px;
+	margin-right: 3px;
+}
+
+.json-tree-data-key {
+	line-height: 13px;
+	padding-bottom:6px;
+	white-space: nowrap;
+	font-size: 0;
+	cursor: default;
+}
+.json-tree-data-key .item {
+	display: inline-block;
+	vertical-align: middle;
+	font-size: 13px;
+}
+
+.json-tree-data .key{
+	color:#881391;
+}
+
+.json-tree-data .edit{
+    padding: 0;
+    position: absolute;
+    border: solid 1px #e6e6e6;
+    box-sizing: border-box;
+}
+
+.json-tree-data .primitive{
+	color: #03c;
+}
+
+.json-tree-data .string{
+	color: #c41a16;
+}
+
+.json-tree-data .others{
+	color: #444;
+}
+
+.json-tree-data-key .hide{
+	display: none;
+}
