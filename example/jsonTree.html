@@ -13,7 +13,7 @@
     <script type='template/regular' id='jsonTree'>
         <div class='json-tree'>
             {#list Object.keys(source) as k}
-                <jsonTreeProp key={k} value={source[k]} />
+                <jsonTreeProp path={k} key={k} value={source[k]} />
             {/list}
         </div>
     </script>
@@ -22,12 +22,11 @@
             <div class='json-tree-data-key'>
                 <img
                     src="../assets/arrow.svg"
-                    style="margin-left: -10px;"
                     alt="arrow"
                     class="arrow item {opened ? 'arrow-down' : null} {hasChildren ? '': 'hide'}"
                     on-click={opened = !opened}
                 />
-                <span class="key item" on-click={opened = !opened}>{key + ':'}&nbsp;</span>
+                <span class="key item" on-click={opened = !opened}>{key + ':'}</span>
                 
                 <span on-dblclick="{ this.onEdit() }">
                 {#if !editing}
@@ -44,18 +43,20 @@
                     {/if}
                 {/if}
                 <input
+                    r-hide="{ !editing }"
                     class="edit"
                     type="text"
-                    value="{ this.isPrimitive(value) ? ( type === 'String' ? JSON.stringify(value) : value) : type }"
+                    value="{ type === 'String' ? JSON.stringify(value) : value }"
+                    on-blur="{ this.onBlur($event) }"
+                    on-keyup="{ this.onEnter($event) }"
                     ref="edit"
-                    r-hide="{ !editing }"
                 >
                 </span>
             </div>
             {#if opened && hasChildren}
             <div class='json-tree-data-props' style='padding-left:20px'>
                 {#list Object.keys(value) as k}
-                    <jsonTreeProp key={k} value={value[k]} padding={true} />
+                    <jsonTreeProp path={path + '.' + k} key={k} value={value[k]} padding={true} />
                 {/list}
             </div>
             {/if}
@@ -79,6 +80,7 @@
                 source: {}
             },
             config: function() {
+                console.log( this );
                 var self = this;
                 function onClick(e) {
                     self.$emit('checkClickOutside', e.target);
@@ -111,8 +113,8 @@
             },
             config: function() {
                 var self = this;
-                this.$parent.$on('checkClickOutside', function( v ) {
-                    if( self.$refs && self.$refs.edit && !self.$refs.edit.contains( v ) ) {
+                this.$parent.$on('checkClickOutside', function(v) {
+                    if( self.$refs && self.$refs.edit && !self.$refs.edit.contains(v) ) {
                         self.data.editing = false;
                         self.$update();
                     }
@@ -120,10 +122,53 @@
                 })
             },
             onEdit: function() {
-                if( !this.isPrimitive( this.data.value ) ) {
+                if( !this.isPrimitive(this.data.value) ) {
                     return;
                 }
                 this.data.editing = true;
+                this.$update();
+                // select all when active
+                var input = this.$refs.edit;
+                input.setSelectionRange(0, input.value.length)
+            },
+            onBlur: function(e) {
+                this.data.editing = false;
+                this.$update();
+                this.editDone(e.target.value);
+            },
+            onEnter: function(e) {
+                // press enter
+                if( e.which === 13 ) {
+                    this.$refs.edit.blur();
+                }
+            },
+            // when editing is finished
+            editDone: function(v) {
+                var tmp = this.data.value;
+                try {
+                    tmp = JSON.parse(v);
+                } catch(e) {
+                }
+                // not primitive type, return
+                if( !this.isPrimitive(tmp) ) {
+                    return;
+                }
+                if( tmp === this.data.value ) {
+                    return;
+                }
+                var parent = this;
+                while(parent = parent.$parent) {
+                    if( parent.name === 'jsonTree' ) {
+                        parent.$emit('change', {
+                            path: this.data.path,
+                            value: tmp,
+                            oldValue: this.data.value
+                        });
+                        break;
+                    }
+                }
+                // TODO: maybe this can be deleted
+                this.data.value = tmp;
                 this.$update();
             },
             isPrimitive: isPrimitive,
@@ -133,7 +178,7 @@
     <script type="text/javascript">
         var App = Regular.extend({
             template: `
-                <jsonTree source="{ source }"></jsonTree>
+                <jsonTree source="{ source }" on-change="{ this.onChange($event) }"></jsonTree>
             `,
             config() {
                 this.data.source = {
@@ -141,8 +186,18 @@
                         description: "sleep"
                     },
                     count: 1,
-                    str: '123'
+                    str: '123',
+                    arr: [
+                        {
+                            a: 1
+                        },
+                        'b',
+                        'c'
+                    ]
                 };
+            },
+            onChange: function(e) {
+                console.log( e.path, 'changed from', e.oldValue, 'to', e.value );
             }
         });
 
