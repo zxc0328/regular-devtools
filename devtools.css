@@ -180,6 +180,7 @@ body {
 }
 
 .json-tree-data-key {
+	position: relative;
 	line-height: 13px;
 	padding-bottom:6px;
 	white-space: nowrap;
