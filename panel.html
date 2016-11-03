@@ -112,16 +112,16 @@
                         <jsonTree source="{ currentNode.computed }" />
                     </sidebarPane>
                 </div>
-                {#elseif tabSelected == 'others' && currentNode && currentNode.others}
+                {#elseif tabSelected == 'others' && currentNode && others}
                 <div>
                     <sidebarPane title="filters">
-                        <simpleJsonTree source="{ currentNode.others._filters }" />
+                        <simpleJsonTree source="{ others._filters }" />
                     </sidebarPane>
                     <sidebarPane title="directives">
-                        <simpleJsonTree source="{ currentNode.others._directives }" />
+                        <simpleJsonTree source="{ others._directives }" />
                     </sidebarPane>
                     <sidebarPane title="animations">
-                        <simpleJsonTree source="{ currentNode.others._animations }" />
+                        <simpleJsonTree source="{ others._animations }" />
                     </sidebarPane>
                 </div>
                 {#else}
