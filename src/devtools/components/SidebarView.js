@@ -105,7 +105,7 @@ const SidebarView = Regular.extend({
         this.$emit('showDefinition', uuid);
     },
     highLightNode(uuid, inspectable) {
-        this.$emit('highlightNode', {uuid, inspectable});
+        this.$emit('highLightNode', {uuid, inspectable});
     }
 });
 

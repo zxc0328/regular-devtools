@@ -76,7 +76,7 @@ devtools
     })
     .$on("clickElement", function(uuid) {
         if (uuid !== sidebarView.data.currentNode.uuid) {
-            let currentNode = findElementByUuid(devtools.data.nodes, uuid);
+            let currentNode = findElementByUuid(this.data.nodes, uuid);
             sidebarView.data.currentNode.name = currentNode.name;
             sidebarView.data.currentNode.inspectable = currentNode.inspectable;
             sidebarView.data.currentNode.uuid = uuid;
@@ -92,7 +92,7 @@ devtools
     .$on("elementViewReRender", function(nodesStr) {
         log("On elementViewRerender.");
         let nodes = CircularJSON.parse(nodesStr);
-
+        this.data.nodes = nodes;
         // need refactor
         /* eslint-disable no-unused-vars */
         var oldArr = elementView.data.nodes;
@@ -131,7 +131,7 @@ sidebarView
     .$on("showDefinition", uuid => {
         showDefinitionByUUID(uuid);
     })
-    .$on("highlightNode", ({uuid, inspectable}) => {
+    .$on("highLightNode", ({uuid, inspectable}) => {
         if (!sidebarView.data.lockHighlight) {
             evalHighLightNode(uuid, inspectable);
         }
@@ -140,6 +140,7 @@ sidebarView
         getData(uuid).then(data => {
             let currentNode = CircularJSON.parse(data);
             sidebarView.data.currentNode.data = currentNode.data;
+            sidebarView.data.currentNode.computed = currentNode.computed;
             sidebarView.$update();
         });
     })
