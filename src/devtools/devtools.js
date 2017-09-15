@@ -8,7 +8,7 @@ import {
     printInConsole,
     findElementByUuid,
     inspectNodeByUUID,
-	showDefinitionByUUID,
+    showDefinitionByUUID,
     updateInstanceByUUIDAndPath,
     evalHighLightNode,
     getData,

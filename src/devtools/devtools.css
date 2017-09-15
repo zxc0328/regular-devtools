@@ -23,7 +23,7 @@ body {
 }
 
 .roboto {
-	font-family: "Roboto";
+  font-family: "Roboto";
 }
 
 /* header start */
@@ -379,7 +379,7 @@ body {
 }
 
 .sidebar__tools {
-	padding: 0 10px;
+  padding: 0 10px;
 }
 
 .sidebar__inspect {
@@ -394,6 +394,7 @@ body {
   cursor: pointer;
   margin: 10px 0;
 }
+
 .sidebar__definition {
   display: inline-block;
   background-image: url(/assets/at-sign.svg);
